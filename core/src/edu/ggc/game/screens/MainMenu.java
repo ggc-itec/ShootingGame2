@@ -3,6 +3,7 @@ package edu.ggc.game.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -36,16 +37,21 @@ public class MainMenu implements Screen
     private Skin skin;
     
     private TextButton exitButton;
+    
+    private Music menuMusic;
         
     public MainMenu()
     {
         setUpSkin();
+        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("menu.mp3"));
+        menuMusic.setLooping(true);
     }
     
     public void setUpSkin()
     {
         skin = new Skin();
         
+        //TODO Fix Me look at this tutorial http://www.toxsickproductions.com/libgdx/libgdx-basics-skins-json-and-bitmapfonts/
         Pixmap pixmap = new Pixmap(150, 150, Format.RGBA8888);
         pixmap.setColor(Color.WHITE);//Foreground color
         pixmap.fill();
@@ -74,6 +80,7 @@ public class MainMenu implements Screen
         table.setFillParent(true);
         stage.addActor(table);//Add table to stage
         Gdx.input.setInputProcessor(stage);
+        menuMusic.play();
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y)
