@@ -1,6 +1,5 @@
 package edu.ggc.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -10,15 +9,12 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
@@ -37,6 +33,7 @@ public class MainMenu implements Screen
     private Skin skin;
     
     private TextButton exitButton;
+    private TextButton creditsButton;
     
     private Music menuMusic;
         
@@ -69,14 +66,17 @@ public class MainMenu implements Screen
         textButtonStyle.font = skin.getFont("simple");
         skin.add("simple", textButtonStyle);
         
-        exitButton=new TextButton("Exit",textButtonStyle);
+        exitButton = new TextButton("Exit",textButtonStyle);
         exitButton.setPosition(0, 0);
+        creditsButton = new TextButton("Credits", textButtonStyle);
+        creditsButton.setPosition(0,0);
     }
     
     @Override
     public void show()
     {
-        table.add(exitButton).row();//Add button to table
+        table.add(exitButton);//Add button to table
+        table.add(creditsButton).row();
         table.setFillParent(true);
         stage.addActor(table);//Add table to stage
         Gdx.input.setInputProcessor(stage);
@@ -87,6 +87,12 @@ public class MainMenu implements Screen
             {
                 Gdx.app.exit();
             }
+        });
+        creditsButton.addListener(new ClickListener() {
+        	@Override
+        	public void clicked(InputEvent event, float x, float y) {
+        		
+        	}
         });
     }
 
