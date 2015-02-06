@@ -2,7 +2,6 @@ package edu.ggc.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -12,52 +11,31 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import edu.ggc.game.ShootingGame;
 
-/**
- * Represents the Main Menu for the game.
- * 
- * A Screen represents menu, settings, game screen
- */
-public class MainMenu implements Screen
+public class Credits implements Screen
 {
-    //2D scene containing a hierarchy of actors
-    private Stage stage = new Stage();
-    
-    private Table table = new Table();
-    
-    //Resource for UI components
-    private Skin skin;
-    
-    private TextButton exitButton;
-    private TextButton creditsButton;
-    
-    private Music menuMusic;
-    
     private ShootingGame g;
     
-    /**
-     * @param g The Game object. This is used to call g.setScreen() to transition to other Screen.
-     */
-    public MainMenu(ShootingGame g)
+    private Skin skin;
+    
+    private TextButton backButton;
+    
+    private Stage stage = new Stage();
+    
+    public Credits(ShootingGame g)
     {
         this.g = g;
         setUpSkin();
-        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("menu.mp3"));
-        menuMusic.setLooping(true);
-        table.add(exitButton);//Add button to table
-        table.add(creditsButton).row();
-        table.setFillParent(true);
-        stage.addActor(table);//Add table to stage
-        addListeners();
+        stage.addActor(backButton);
+        addListener();
     }
     
-    public void setUpSkin()
+    private void setUpSkin()
     {
         skin = new Skin();
         
@@ -77,45 +55,32 @@ public class MainMenu implements Screen
 //        textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);//After being clicked and released
         textButtonStyle.over = skin.newDrawable("white", Color.RED);//When mouse hovers over it
         textButtonStyle.font = skin.getFont("simple");
-        skin.add("simple", textButtonStyle);
         
-        exitButton = new TextButton("Exit",textButtonStyle);
-        exitButton.setPosition(0, 0);
-        creditsButton = new TextButton("Credits", textButtonStyle);
-        creditsButton.setPosition(0,0);
+        backButton = new TextButton("Back", textButtonStyle);
+        backButton.setPosition(0,  0);
     }
     
-    private void addListeners()
+    private void addListener()
     {
-        exitButton.addListener(new ClickListener() {
+        backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                Gdx.app.exit();
-            }
-        });
-        creditsButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                g.setScreen(g.creditScreen);
+                g.setScreen(g.menuScreen);
             }
         });
     }
-    
-    /**
-     * Called when g.setScreen() is called.
-     */
+
     @Override
     public void show()
     {
         Gdx.input.setInputProcessor(stage);
-        menuMusic.play();        
     }
 
     @Override
     public void render(float delta)
     {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
@@ -129,36 +94,21 @@ public class MainMenu implements Screen
     @Override
     public void pause()
     {
-        if(menuMusic.isPlaying())
-            menuMusic.pause();
     }
 
     @Override
     public void resume()
     {
-        if (!menuMusic.isPlaying())
-            menuMusic.play();
     }
 
-    /**
-     * This is called automatically.
-     */
     @Override
     public void hide()
     {
-        if(menuMusic.isPlaying())
-            menuMusic.stop();
     }
 
-    /**
-     * This method must be called manually.
-     */
     @Override
     public void dispose()
-    {
-        menuMusic.dispose();
-        stage.dispose();
-        skin.dispose();
+    {   
     }
 
 }

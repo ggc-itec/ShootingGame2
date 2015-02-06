@@ -1,11 +1,10 @@
 package edu.ggc.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import edu.ggc.game.screens.Credits;
 import edu.ggc.game.screens.MainMenu;
 
 /**
@@ -18,16 +17,23 @@ public class ShootingGame extends Game {
 	//reference to an image
 	Texture img;
 	
+	public MainMenu menuScreen;
+	public Credits creditScreen;
+	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-		setScreen(new MainMenu());
+		menuScreen = new MainMenu(this);
+		creditScreen = new Credits(this);
+		
+		setScreen(menuScreen);
 	}
+		
 	
-	/**
-	 * Remove this method to delegate rendering to another Screen.
-	 */
+	/*
+     * Remove this method to delegate rendering to another Screen.
+     */
 	
 	/*	
     @Override
@@ -41,4 +47,11 @@ public class ShootingGame extends Game {
 		batch.draw(img, 100, 0);
 		batch.end();
 	}*/
+	
+	@Override
+	public void dispose()
+	{
+	    menuScreen.dispose();
+	    creditScreen.dispose();
+	}
 }
