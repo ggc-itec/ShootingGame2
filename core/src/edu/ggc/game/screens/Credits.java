@@ -8,8 +8,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -23,9 +26,14 @@ public class Credits implements Screen
     
     private Skin skin;
     
+    private Pixmap pixmap;
+    private Pixmap rect;
+    
     private TextButton backButton;
     
     private Stage stage = new Stage();
+    
+    private Sprite sprite;
     
     public Credits(ShootingGame g)
     {
@@ -33,6 +41,20 @@ public class Credits implements Screen
         setUpSkin();
         stage.addActor(backButton);
         addListener();
+        
+        rect = new Pixmap(50, 50, Format.RGBA8888);
+        rect.setColor(Color.PINK);
+        rect.fill();
+//        
+//        sprite = new Sprite(new Texture(rect));
+//        sprite.setSize(1, 1);
+//        sprite.setOrigin(0, 0);
+//        sprite.setPosition(50, 50);
+        
+//        Actor act = new Actor();
+        Image img = new Image(new Texture(rect));
+        img.setPosition(50, 50);
+        stage.addActor(img);
     }
     
     private void setUpSkin()
@@ -40,7 +62,7 @@ public class Credits implements Screen
         skin = new Skin();
         
         //TODO Fix Me look at this tutorial http://www.toxsickproductions.com/libgdx/libgdx-basics-skins-json-and-bitmapfonts/
-        Pixmap pixmap = new Pixmap(150, 150, Format.RGBA8888);
+        pixmap = new Pixmap(150, 150, Format.RGBA8888);//This object must call dispose()
         pixmap.setColor(Color.WHITE);//Foreground color
         pixmap.fill();
         skin.add("white", new Texture(pixmap));
@@ -82,7 +104,7 @@ public class Credits implements Screen
     {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act();
+//        stage.act();
         stage.draw();
     }
 
@@ -108,7 +130,9 @@ public class Credits implements Screen
 
     @Override
     public void dispose()
-    {   
+    {
+        pixmap.dispose();
+        rect.dispose();
     }
 
 }
