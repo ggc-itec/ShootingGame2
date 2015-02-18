@@ -24,7 +24,7 @@ public class ShootingGame extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-		menuScreen = new MainMenu(this);
+		menuScreen = new MainMenu();
 		creditScreen = new Credits(this);
 		
 		setScreen(menuScreen);

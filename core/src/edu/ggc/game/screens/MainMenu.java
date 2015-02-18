@@ -5,19 +5,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
-import edu.ggc.game.ShootingGame;
 
 /**
  * Represents the Main Menu for the game.
@@ -26,81 +27,16 @@ import edu.ggc.game.ShootingGame;
  */
 public class MainMenu implements Screen
 {
-    //2D scene containing a hierarchy of actors
-    private Stage stage = new Stage();
-    
-    private Table table = new Table();
-    
-    //Resource for UI components
+    private Stage stage;
+    private TextureAtlas atlas;
     private Skin skin;
-    
+    private Table table;
     private TextButton exitButton;
-    private TextButton creditsButton;
+    private BitmapFont blackHoleFont;
     
     private Music menuMusic;
     
-    private ShootingGame g;
-    
-    /**
-     * @param g The Game object. This is used to call g.setScreen() to transition to other Screen.
-     */
-    public MainMenu(ShootingGame g)
-    {
-        this.g = g;
-        setUpSkin();
-        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("menu.mp3"));
-        menuMusic.setLooping(true);
-        table.add(exitButton);//Add button to table
-        table.add(creditsButton).row();
-        table.setFillParent(true);
-        stage.addActor(table);//Add table to stage
-        addListeners();
-    }
-    
-    public void setUpSkin()
-    {
-        skin = new Skin();
-        
-        //TODO Fix Me look at this tutorial http://www.toxsickproductions.com/libgdx/libgdx-basics-skins-json-and-bitmapfonts/
-        Pixmap pixmap = new Pixmap(150, 150, Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);//Foreground color
-        pixmap.fill();
-        skin.add("white", new Texture(pixmap));
-        
-        BitmapFont font = new BitmapFont();
-        font.scale(1.5f);
-        skin.add("simple", font);
-        
-        TextButtonStyle textButtonStyle = new TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.GREEN);//When this button shows up
-        textButtonStyle.down = skin.newDrawable("white", Color.YELLOW);//When the button is clicked and held
-//        textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);//After being clicked and released
-        textButtonStyle.over = skin.newDrawable("white", Color.RED);//When mouse hovers over it
-        textButtonStyle.font = skin.getFont("simple");
-        skin.add("simple", textButtonStyle);
-        
-        exitButton = new TextButton("Exit",textButtonStyle);
-        exitButton.setPosition(0, 0);
-        creditsButton = new TextButton("Credits", textButtonStyle);
-        creditsButton.setPosition(0,0);
-    }
-    
-    private void addListeners()
-    {
-        exitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y)
-            {
-                Gdx.app.exit();
-            }
-        });
-        creditsButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                g.setScreen(g.creditScreen);
-            }
-        });
-    }
+    private Label heading;
     
     /**
      * Called when g.setScreen() is called.
@@ -108,22 +44,72 @@ public class MainMenu implements Screen
     @Override
     public void show()
     {
+        stage = new Stage();
+        
         Gdx.input.setInputProcessor(stage);
-        menuMusic.play();        
+        
+        atlas = new TextureAtlas("ui/button.pack");
+        skin = new Skin(atlas);
+        blackHoleFont = new BitmapFont(Gdx.files.internal("font/blackhole.fnt"));
+        
+        Image background = new Image(new Texture(Gdx.files.internal("background.jpg")));//TODO maybe a better way to display background
+        
+        table = new Table(skin);
+        table.setBackground(background.getDrawable());
+        table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());//Table fills the whole screen
+        
+        setUpButton();
+        
+        //create the Label to display the game name
+        LabelStyle labelStyle = new LabelStyle(blackHoleFont, Color.BLUE);
+        heading = new Label("Shooting Game 2", labelStyle);
+        heading.setFontScale(2.0f);
+        
+        table.add(heading).spaceBottom(50).row();
+        table.add(exitButton);
+        table.debug();//Turns on debug lines
+        stage.addActor(table);
+        
+        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
+        menuMusic.setLooping(true);
+        menuMusic.play();
+    }
+    
+    private void setUpButton()
+    {
+        TextButtonStyle textButtonStyle = new TextButtonStyle();
+        textButtonStyle.up = skin.getDrawable("button_up");//button_up is defined in ui/button.pack
+        textButtonStyle.down = skin.getDrawable("button_down");//button_down is defined in ui/button.pack
+        textButtonStyle.pressedOffsetX = 1;
+        textButtonStyle.pressedOffsetY = -1;
+        textButtonStyle.font = blackHoleFont;
+        textButtonStyle.fontColor = Color.BLUE;
+        
+        exitButton = new TextButton("Exit", textButtonStyle);
+        exitButton.pad(10);//Padding around the button's text
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                Gdx.app.exit();
+            }
+        });
     }
 
     @Override
     public void render(float delta)
     {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act();
+//        Gdx.gl.glClearColor(0, 0, 0, 1);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(delta);
         stage.draw();
+        System.out.println("FPS: " + Gdx.graphics.getFramesPerSecond());
     }
 
     @Override
     public void resize(int width, int height)
     {
+        stage.getViewport().update(width, height);
     }
 
     @Override
@@ -136,7 +122,7 @@ public class MainMenu implements Screen
     @Override
     public void resume()
     {
-        if (!menuMusic.isPlaying())
+        if(!menuMusic.isPlaying())
             menuMusic.play();
     }
 
@@ -147,7 +133,7 @@ public class MainMenu implements Screen
     public void hide()
     {
         if(menuMusic.isPlaying())
-            menuMusic.stop();
+            menuMusic.pause();
     }
 
     /**
@@ -156,9 +142,11 @@ public class MainMenu implements Screen
     @Override
     public void dispose()
     {
-        menuMusic.dispose();
         stage.dispose();
+        atlas.dispose();
         skin.dispose();
+        blackHoleFont.dispose();
+        menuMusic.dispose();
     }
 
 }
