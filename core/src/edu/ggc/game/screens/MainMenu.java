@@ -1,9 +1,11 @@
 package edu.ggc.game.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,6 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
+import edu.ggc.game.Assets;
+import edu.ggc.game.ShootingGame;
 
 /**
  * Represents the Main Menu for the game.
@@ -26,10 +31,18 @@ public class MainMenu implements Screen
     private Skin skin;
     private Table table;
     private TextButton exitButton;
+    private TextButton creditsButton;
+    private BitmapFont blackHoleFont;
     
     private Music menuMusic;
     
     private Label heading;
+    
+    private ShootingGame game;
+    
+    public MainMenu(ShootingGame game){
+    	this.game = game;
+    }
     
     /**
      * Called when g.setScreen() is called.
@@ -51,13 +64,15 @@ public class MainMenu implements Screen
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());//Table fills the whole screen
         
         setUpButton();
+        setupCreditsButton();
         
         //create the Label to display the game name
-        heading = new Label("Shooting Game 2", skin);
+        heading = new Label(Assets.TITLE, skin);
         heading.setFontScale(2.0f);
         
         table.add(heading).spaceBottom(50).row();
-        table.add(exitButton);
+        table.add(exitButton).row();
+        table.add(creditsButton);
         table.debug();//Turns on debug lines
         stage.addActor(table);
         
@@ -79,6 +94,27 @@ public class MainMenu implements Screen
         });
     }
 
+    //setup Credits Button
+    private void setupCreditsButton(){
+    	TextButtonStyle textButtonStyle = new TextButtonStyle();
+        textButtonStyle.up = skin.getDrawable("button_up");//button_up is defined in ui/button.pack
+        textButtonStyle.down = skin.getDrawable("button_down");//button_down is defined in ui/button.pack
+        textButtonStyle.pressedOffsetX = 1;
+        textButtonStyle.pressedOffsetY = -1;
+        textButtonStyle.font = blackHoleFont;
+        textButtonStyle.fontColor = Color.BLUE;
+        
+        exitButton = new TextButton("Credits", textButtonStyle);
+        exitButton.pad(10);//Padding around the button's text
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                game.setScreen(game.creditScreen);
+            }
+        });
+    }
+    
     @Override
     public void render(float delta)
     {
