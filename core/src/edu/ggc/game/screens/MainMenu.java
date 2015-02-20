@@ -37,12 +37,6 @@ public class MainMenu implements Screen
     
     private Label heading;
     
-    private ShootingGame game;
-    
-    public MainMenu(ShootingGame game){
-    	this.game = game;
-    }
-    
     /**
      * Called when g.setScreen() is called.
      */
@@ -118,7 +112,7 @@ public class MainMenu implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new Credits(game));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new Credits());
             }
         });
     }
@@ -136,7 +130,7 @@ public class MainMenu implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                System.out.println("hello");
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen());
             }
         });
     }

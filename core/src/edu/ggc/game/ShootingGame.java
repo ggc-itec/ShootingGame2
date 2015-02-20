@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import edu.ggc.game.screens.Credits;
+import edu.ggc.game.screens.GameScreen;
 import edu.ggc.game.screens.MainMenu;
 
 /**
@@ -17,17 +18,12 @@ public class ShootingGame extends Game {
 	//reference to an image
 	Texture img;
 	
-	public MainMenu menuScreen;
-	public Credits creditScreen;
-	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-		menuScreen = new MainMenu(this);
-		creditScreen = new Credits(this);
 		
-		setScreen(menuScreen);
+		setScreen(new MainMenu());
 	}
 		
 	
@@ -51,7 +47,5 @@ public class ShootingGame extends Game {
 	@Override
 	public void dispose()
 	{
-	    menuScreen.dispose();
-	    creditScreen.dispose();
 	}
 }

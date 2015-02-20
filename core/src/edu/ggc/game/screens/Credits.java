@@ -1,5 +1,6 @@
 package edu.ggc.game.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -35,7 +36,7 @@ public class Credits implements Screen
     
     private Sprite sprite;
     
-    public Credits(ShootingGame g)
+    public Credits()
     {
         this.g = g;
         setUpSkin();
@@ -88,7 +89,7 @@ public class Credits implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                g.setScreen(g.menuScreen);
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
             }
         });
     }
