@@ -4,9 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import edu.ggc.game.Assets;
@@ -34,7 +31,7 @@ public class MainMenu implements Screen
     private Table table;
     private TextButton exitButton;
     private TextButton creditsButton;
-    private BitmapFont blackHoleFont;
+    private TextButton playButton;
     
     private Music menuMusic;
     
@@ -60,22 +57,24 @@ public class MainMenu implements Screen
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
         
         Image background = new Image(new Texture(Gdx.files.internal("background.jpg")));//TODO maybe a better way to display background
-        
+                
         table = new Table(skin);
         table.setBackground(background.getDrawable());
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());//Table fills the whole screen
         
         setUpButton();
         setupCreditsButton();
+        setupPlayButtons();
         
         //create the Label to display the game name
         heading = new Label(Assets.TITLE, skin);
         heading.setFontScale(2.0f);
         
         table.add(heading).spaceBottom(50).row();
-        table.add(exitButton).row();
-        table.add(creditsButton);
-        table.debug();//Turns on debug lines
+        table.add(exitButton).spaceBottom(5).row();
+        table.add(creditsButton).spaceBottom(5).row();
+        table.add(playButton);
+//        table.debug();//Turns on debug lines
         stage.addActor(table);
         
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
@@ -98,21 +97,27 @@ public class MainMenu implements Screen
 
     //setup Credits Button
     private void setupCreditsButton(){
-    	TextButtonStyle textButtonStyle = new TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("button_up");//button_up is defined in ui/button.pack
-        textButtonStyle.down = skin.getDrawable("button_down");//button_down is defined in ui/button.pack
-        textButtonStyle.pressedOffsetX = 1;
-        textButtonStyle.pressedOffsetY = -1;
-        textButtonStyle.font = blackHoleFont;
-        textButtonStyle.fontColor = Color.BLUE;
         
-        exitButton = new TextButton("Credits", textButtonStyle);
-        exitButton.pad(10);//Padding around the button's text
-        exitButton.addListener(new ClickListener() {
+        creditsButton = new TextButton("Credits", skin);
+        creditsButton.pad(10);//Padding around the button's text
+        creditsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                game.setScreen(game.creditScreen);
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new Credits(game));
+            }
+        });
+    }
+    
+    private void setupPlayButtons() {
+        
+        playButton = new TextButton("Play", skin);
+        playButton.pad(10);//Padding around the button's text
+        playButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                System.out.println("hello");
             }
         });
     }
@@ -122,7 +127,7 @@ public class MainMenu implements Screen
     {
         stage.act(delta);
         stage.draw();
-        System.out.println("FPS: " + Gdx.graphics.getFramesPerSecond());
+//        System.out.println("FPS: " + Gdx.graphics.getFramesPerSecond());
     }
 
     @Override

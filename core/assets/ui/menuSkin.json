@@ -10,12 +10,12 @@
 	},
 	
 	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
-		"default": { "font": blackHoleFont, "fontColor": blue }
+		"default": { "font": blackHoleFont, "fontColor": white }
 	},
 	
 	"com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
 		"default": { "up": "button_up", "down": "button_down",
 					 "pressedOffsetX": 1, "pressedOffsetY": -1,
-					 "font":blackHoleFont, "fontColor": blue }
+					 "font":blackHoleFont, "fontColor": white }
 	}
 }
