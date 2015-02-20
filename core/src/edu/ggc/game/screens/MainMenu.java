@@ -83,8 +83,21 @@ public class MainMenu implements Screen
     }
     
     private void setUpButton()
+<<<<<<< Updated upstream
     {        
         exitButton = new TextButton("Exit", skin);
+=======
+    {
+        TextButtonStyle textButtonStyle = new TextButtonStyle();
+        textButtonStyle.up = skin.getDrawable("button_up");//button_up is defined in ui/button.pack
+        textButtonStyle.down = skin.getDrawable("button_down");//button_down is defined in ui/button.pack
+        textButtonStyle.pressedOffsetX = 1;
+        textButtonStyle.pressedOffsetY = -1;
+        textButtonStyle.font = blackHoleFont;
+        textButtonStyle.fontColor = Color.BLUE;
+        
+        exitButton = new TextButton("Exit", textButtonStyle);
+>>>>>>> Stashed changes
         exitButton.pad(10);//Padding around the button's text
         exitButton.addListener(new ClickListener() {
             @Override
@@ -98,6 +111,7 @@ public class MainMenu implements Screen
     //setup Credits Button
     private void setupCreditsButton(){
         
+<<<<<<< Updated upstream
         creditsButton = new TextButton("Credits", skin);
         creditsButton.pad(10);//Padding around the button's text
         creditsButton.addListener(new ClickListener() {
@@ -114,6 +128,11 @@ public class MainMenu implements Screen
         playButton = new TextButton("Play", skin);
         playButton.pad(10);//Padding around the button's text
         playButton.addListener(new ClickListener() {
+=======
+        creditsButton = new TextButton("Credits", textButtonStyle);
+        creditsButton.pad(10);//Padding around the button's text
+        creditsButton.addListener(new ClickListener() {
+>>>>>>> Stashed changes
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
