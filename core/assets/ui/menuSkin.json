@@ -1,0 +1,21 @@
+{
+	"com.badlogic.gdx.graphics.Color": {
+		"blue": { "r": 0, "g": 0, "b": 1, "a": 1 },
+		"white":{ "r": 1, "g": 1, "b": 1, "a": 1 },
+		"black":{ "r": 0, "g": 0, "b": 0, "a": 1 }
+	},
+	
+	"com.badlogic.gdx.graphics.g2d.BitmapFont": {
+		"blackHoleFont": { "file": "font/blackhole.fnt" }
+	},
+	
+	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+		"default": { "font": blackHoleFont, "fontColor": blue }
+	},
+	
+	"com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+		"default": { "up": "button_up", "down": "button_down",
+					 "pressedOffsetX": 1, "pressedOffsetY": -1,
+					 "font":blackHoleFont, "fontColor": blue }
+	}
+}
