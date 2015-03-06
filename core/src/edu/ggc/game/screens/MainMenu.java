@@ -47,10 +47,10 @@ public class MainMenu implements Screen
         
         Gdx.input.setInputProcessor(stage);
         
-        atlas = new TextureAtlas("ui/button.pack");
-        skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
+        atlas = new TextureAtlas(Assets.BUTTON_TEXTURE);
+        skin = new Skin(Gdx.files.internal(Assets.MENU_SKIN), atlas);
         
-        Image background = new Image(new Texture(Gdx.files.internal("background.jpg")));//TODO maybe a better way to display background
+        Image background = new Image(new Texture(Gdx.files.internal(Assets.BACKGROUND)));//TODO maybe a better way to display background
                 
         table = new Table(skin);
         table.setBackground(background.getDrawable());
@@ -71,7 +71,7 @@ public class MainMenu implements Screen
 //        table.debug();//Turns on debug lines
         stage.addActor(table);
         
-        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
+        menuMusic = Gdx.audio.newMusic(Gdx.files.internal(Assets.MENU_MUSIC));
         menuMusic.setLooping(true);
         menuMusic.play();
     }
