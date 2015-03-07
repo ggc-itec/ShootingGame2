@@ -16,21 +16,22 @@ public class GameScreen implements Screen
     private Animation arrowAnimation;
     private SpriteBatch batch;
     private float stateTime = 0.0f;
-    
     private OrthographicCamera camera;//This is needed for rendering
     private TextureAtlas spriteSheet;
-    
     private Array<Sprite> arrow;
+    private float arrowX;
+    private float arrowY;
 
     @Override
     public void show()
     {
         batch = new SpriteBatch();
-        spriteSheet = new TextureAtlas("test/spritesheet.txt");
-        
+        //Note: must set camera to batch in order to draw sprites
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.setProjectionMatrix(camera.combined);
+        spriteSheet = new TextureAtlas("test/spritesheet.txt");        
         arrow = spriteSheet.createSprites("arrow");
         arrowAnimation = new Animation(1/30.0f, arrow);
-        setSize();
     }
 
     @Override
@@ -39,57 +40,38 @@ public class GameScreen implements Screen
         handleInput(delta);
         GL20 gl = Gdx.graphics.getGL20();
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stateTime += Gdx.graphics.getDeltaTime();
-        Sprite spr = (Sprite) arrowAnimation.getKeyFrame(stateTime, true);
-        System.out.println("X: " +spr.getX() + " Y: " + spr.getY());
-        
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-//        spr.draw(batch);
-        batch.draw(spr, 50, 50);
-        batch.end();
-        
+        drawSprite();
     }
+    
+    private void drawSprite() {
+    	 stateTime += Gdx.graphics.getDeltaTime();
+         Sprite spr = (Sprite) arrowAnimation.getKeyFrame(stateTime, true);
+         batch.begin();
+         batch.draw(spr, (int)arrowX, (int)arrowY);
+         batch.end();
+	}
     
     private void handleInput(float delta)
     {
-        float moveSpeed = 3.0f * delta;
-//        System.out.println("Move Speed: " + moveSpeed);
+        float moveSpeed = 30.0f * delta;
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
         {
-            moveSprite(-1 * moveSpeed, 0.0f);
+            arrowX = arrowX  - (moveSpeed);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         {
-            moveSprite(moveSpeed, 0.0f);
+            arrowX = arrowX + (moveSpeed);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
-            moveSprite(0.0f, moveSpeed);
+            arrowY = arrowY + (moveSpeed);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
         {
-            moveSprite(0.0f, -1 * moveSpeed);
+            arrowY = arrowY - (moveSpeed);
         }
     }
     
-    private void moveSprite(float x, float y)
-    {
-        for(Sprite s : arrow)
-        {
-            s.translate(x, y);
-        }
-    }
-    
-    private void setSize()
-    {
-        for(int i = 0; i < arrow.size; i++)
-        {
-            arrow.get(i).setSize(1.0f, 1.0f);
-            arrow.get(i).setCenter(0, 0);
-        }
-    }
-
     @Override
     public void resize(int width, int height)
     {
