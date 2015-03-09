@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +22,7 @@ public class GameScreen implements Screen
     private Array<Sprite> arrow;
     private float arrowX;
     private float arrowY;
+    private Sprite missile;
 
     @Override
     public void show()
@@ -32,6 +34,7 @@ public class GameScreen implements Screen
         spriteSheet = new TextureAtlas("test/spritesheet.txt");        
         arrow = spriteSheet.createSprites("arrow");
         arrowAnimation = new Animation(1/30.0f, arrow);
+        missile = new Sprite(new Texture("badlogic.jpg"));
     }
 
     @Override
@@ -48,6 +51,7 @@ public class GameScreen implements Screen
          Sprite spr = (Sprite) arrowAnimation.getKeyFrame(stateTime, true);
          batch.begin();
          batch.draw(spr, (int)arrowX, (int)arrowY);
+         batch.draw(missile, (int) (-300*Math.cos(stateTime)), (int) (-100*Math.sin(stateTime)));
          batch.end();
 	}
     
@@ -69,6 +73,10 @@ public class GameScreen implements Screen
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
         {
             arrowY = arrowY - (moveSpeed);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        {
+        	
         }
     }
     

@@ -13,16 +13,9 @@ import edu.ggc.game.screens.MainMenu;
  *
  */
 public class ShootingGame extends Game {
-    //receives drawing commands 
-	SpriteBatch batch;
-	//reference to an image
-	Texture img;
 	
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-		
 		setScreen(new MainMenu());
 	}
 		
