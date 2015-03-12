@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 
+import edu.ggc.game.sprites.Missile;
+
 public class GameScreen implements Screen
 {
     private Animation arrowAnimation;
@@ -22,7 +24,8 @@ public class GameScreen implements Screen
     private Array<Sprite> arrow;
     private float arrowX;
     private float arrowY;
-    private Sprite missile;
+    private Sprite logo;
+    private Missile missile;
 
     @Override
     public void show()
@@ -34,7 +37,8 @@ public class GameScreen implements Screen
         spriteSheet = new TextureAtlas("test/spritesheet.txt");        
         arrow = spriteSheet.createSprites("arrow");
         arrowAnimation = new Animation(1/30.0f, arrow);
-        missile = new Sprite(new Texture("badlogic.jpg"));
+        logo = new Sprite(new Texture("badlogic.jpg"));
+        missile = new Missile();
     }
 
     @Override
@@ -51,7 +55,8 @@ public class GameScreen implements Screen
          Sprite spr = (Sprite) arrowAnimation.getKeyFrame(stateTime, true);
          batch.begin();
          batch.draw(spr, (int)arrowX, (int)arrowY);
-         batch.draw(missile, (int) (-300*Math.cos(stateTime)), (int) (-100*Math.sin(stateTime)));
+         batch.draw(logo, (int) (-300*Math.cos(stateTime)), (int) (-100*Math.sin(stateTime)));
+         batch.draw(missile.getSprite(), 50,50);
          batch.end();
 	}
     
