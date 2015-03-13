@@ -1,5 +1,7 @@
 package edu.ggc.game.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 
+import edu.ggc.game.sprites.CustomSprite;
 import edu.ggc.game.sprites.Missile;
 
 public class GameScreen implements Screen
@@ -25,8 +28,8 @@ public class GameScreen implements Screen
     private float arrowX;
     private float arrowY;
     private Sprite logo;
-    private Missile missile;
-
+    private ArrayList<CustomSprite> sprites;
+    
     @Override
     public void show()
     {
@@ -38,7 +41,8 @@ public class GameScreen implements Screen
         arrow = spriteSheet.createSprites("arrow");
         arrowAnimation = new Animation(1/30.0f, arrow);
         logo = new Sprite(new Texture("badlogic.jpg"));
-        missile = new Missile();
+        sprites = new ArrayList<CustomSprite>();
+        sprites.add(new Missile());
     }
 
     @Override
@@ -56,7 +60,10 @@ public class GameScreen implements Screen
          batch.begin();
          batch.draw(spr, (int)arrowX, (int)arrowY);
          batch.draw(logo, (int) (-300*Math.cos(stateTime)), (int) (-100*Math.sin(stateTime)));
-         batch.draw(missile.getSprite(), 50,50);
+         for (CustomSprite c: sprites)
+         {
+        	 c.render(batch);
+         }
          batch.end();
 	}
     

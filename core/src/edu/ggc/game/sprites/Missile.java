@@ -4,17 +4,22 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Missile {
+public class Missile extends CustomSprite {
 
+	private int x = 100;
+	private int y = 100;
 	private int width = 20;
 	private int height = 50;
 	private Pixmap pixmap;
 	private Texture texture;
+	private Sprite sprite;
 	
 	public Missile() {
 		pixmap = createPixmap();
 		texture = new Texture(pixmap);
+		sprite = new Sprite(texture);
 	}
 	
 	private Pixmap createPixmap() {
@@ -27,6 +32,10 @@ public class Missile {
 	}
 	
 	public Sprite getSprite() {
-		return new Sprite(texture);
+		return sprite;
+	}
+	
+	public void render(SpriteBatch batch) {
+		batch.draw(getSprite(),x,y);
 	}
 }
