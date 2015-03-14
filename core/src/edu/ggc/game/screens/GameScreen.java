@@ -1,6 +1,7 @@
 package edu.ggc.game.screens;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -29,6 +30,7 @@ public class GameScreen implements Screen
     private float arrowY;
     private Sprite logo;
     private ArrayList<CustomSprite> sprites;
+    private Random random= new Random();
     
     @Override
     public void show()
@@ -42,7 +44,7 @@ public class GameScreen implements Screen
         arrowAnimation = new Animation(1/30.0f, arrow);
         logo = new Sprite(new Texture("badlogic.jpg"));
         sprites = new ArrayList<CustomSprite>();
-        sprites.add(new Missile());
+        sprites.add(new Missile(100,100));
     }
 
     @Override
@@ -88,7 +90,7 @@ public class GameScreen implements Screen
         }
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
         {
-        	
+        	sprites.add(new Missile(-100,100));
         }
     }
     

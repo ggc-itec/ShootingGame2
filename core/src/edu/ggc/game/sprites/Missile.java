@@ -8,15 +8,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Missile extends CustomSprite {
 
-	private int x = 100;
-	private int y = 100;
+	private int x;
+	private int y;
 	private int width = 20;
 	private int height = 50;
 	private Pixmap pixmap;
 	private Texture texture;
 	private Sprite sprite;
 	
-	public Missile() {
+	public Missile(int x, int y) {
+		this.x = x;
+		this.y = y;
 		pixmap = createPixmap();
 		texture = new Texture(pixmap);
 		sprite = new Sprite(texture);
@@ -36,6 +38,6 @@ public class Missile extends CustomSprite {
 	}
 	
 	public void render(SpriteBatch batch) {
-		batch.draw(getSprite(),x,y);
+		batch.draw(getSprite(),x,y++);
 	}
 }
