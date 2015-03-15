@@ -38,6 +38,7 @@ public class GameScreen implements Screen
         batch = new SpriteBatch();
         //Note: must set camera to batch in order to draw sprites
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.setProjectionMatrix(camera.combined);
         spriteSheet = new TextureAtlas("test/spritesheet.txt");        
         arrow = spriteSheet.createSprites("arrow");
@@ -90,7 +91,8 @@ public class GameScreen implements Screen
         }
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
         {
-        	sprites.add(new Missile(-100,100));
+        	
+        	sprites.add(new Missile(random.nextInt(Gdx.graphics.getWidth()),100));
         }
     }
     
